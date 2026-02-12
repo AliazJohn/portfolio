@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aliyas John | Portfolio</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #0a0a0a;
+  --white: #ffffff;
+  --gray: #888;
+  --border: #1a1a1a;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  overflow-x: hidden;
+}
+
+section {
+  min-height: 100vh;
+  padding: 100px 10%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+h1 {
+  font-size: 4rem;
+  font-weight: 800;
+  letter-spacing: -2px;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 40px;
+  font-weight: 600;
+}
+
+.subtitle {
+  color: var(--gray);
+  margin-top: 15px;
+  font-weight: 300;
+}
+
+.tabs {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.tab-button {
+  padding: 10px 25px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--white);
+  cursor: pointer;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.tab-button:hover {
+  border-color: var(--white);
+}
+
+.tab-button.active {
+  background: var(--white);
+  color: var(--bg);
+}
+
+.tab-content {
+  display: none;
+  animation: fade 0.5s ease forwards;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+@keyframes fade {
+  from { opacity: 0; transform: translateY(10px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+
+.card {
+  padding: 30px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  margin-bottom: 20px;
+  backdrop-filter: blur(10px);
+  transition: 0.3s ease;
+}
+
+.card:hover {
+  border-color: var(--white);
+  transform: translateY(-5px);
+}
+
+.nav {
+  position: fixed;
+  top: 30px;
+  right: 50px;
+  display: flex;
+  gap: 20px;
+  font-size: 0.9rem;
+}
+
+.nav a {
+  text-decoration: none;
+  color: var(--gray);
+  transition: 0.3s;
+}
+
+.nav a:hover {
+  color: var(--white);
+}
+
+footer {
+  text-align: center;
+  padding: 40px;
+  color: var(--gray);
+  border-top: 1px solid var(--border);
+}
+
+@media (max-width:768px){
+  h1 { font-size: 2.5rem;}
+  section { padding: 100px 7%;}
+  .nav { right: 20px;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="nav">
+  <a href="#about">About</a>
+  <a href="#work">Work</a>
+  <a href="#projects">Projects</a>
+  <a href="#contact">Contact</a>
+</div>
+
+<section>
+  <h1>Aliyas John</h1>
+  <p class="subtitle">Generative AI Developer · ML Explorer · Builder</p>
+</section>
+
+<section id="about">
+  <h2>About</h2>
+
+  <div class="tabs">
+    <button class="tab-button active" onclick="openTab(event,'bio')">Bio</button>
+    <button class="tab-button" onclick="openTab(event,'education')">Education</button>
+    <button class="tab-button" onclick="openTab(event,'skills')">Skills</button>
+  </div>
+
+  <div id="bio" class="tab-content active">
+    <div class="card">
+      <p>AI developer focused on RAG systems, agentic AI and knowledge graphs. Passionate about building intelligent systems that actually solve real-world problems.</p>
+    </div>
+  </div>
+
+  <div id="education" class="tab-content">
+    <div class="card">
+      <p>B.Tech in Computer Science – XYZ University (Dummy, update later)</p>
+    </div>
+  </div>
+
+  <div id="skills" class="tab-content">
+    <div class="card">
+      <p>Python · Flask · Azure · LangChain · Neo4j · Generative AI · Vector DBs · Prompt Engineering</p>
+    </div>
+  </div>
+</section>
+
+<section id="work">
+  <h2>Work</h2>
+
+  <div class="tabs">
+    <button class="tab-button active" onclick="openTab(event,'current')">Current</button>
+    <button class="tab-button" onclick="openTab(event,'past')">Past</button>
+  </div>
+
+  <div id="current" class="tab-content active">
+    <div class="card">
+      <p>Building RAG systems and AI solutions for enterprise use cases.</p>
+    </div>
+  </div>
+
+  <div id="past" class="tab-content">
+    <div class="card">
+      <p>Worked on AI-based visual search system using YOLO + CLIP model integration.</p>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <h2>Projects</h2>
+
+  <div class="tabs">
+    <button class="tab-button active" onclick="openTab(event,'rag')">RAG</button>
+    <button class="tab-button" onclick="openTab(event,'vision')">Vision</button>
+    <button class="tab-button" onclick="openTab(event,'agents')">Agents</button>
+  </div>
+
+  <div id="rag" class="tab-content active">
+    <div class="card">
+      <p>Enterprise chatbot powered by vector embeddings + Azure Cognitive Search + LLM.</p>
+    </div>
+  </div>
+
+  <div id="vision" class="tab-content">
+    <div class="card">
+      <p>Package detection using YOLO and semantic matching using CLIP embeddings.</p>
+    </div>
+  </div>
+
+  <div id="agents" class="tab-content">
+    <div class="card">
+      <p>Exploring agentic AI systems with Neo4j knowledge graph integration.</p>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <h2>Contact</h2>
+
+  <div class="tabs">
+    <button class="tab-button active" onclick="openTab(event,'email')">Email</button>
+    <button class="tab-button" onclick="openTab(event,'social')">Social</button>
+  </div>
+
+  <div id="email" class="tab-content active">
+    <div class="card">
+      <p>Aliyasjohn@example.com</p>
+    </div>
+  </div>
+
+  <div id="social" class="tab-content">
+    <div class="card">
+      <p>LinkedIn · GitHub · Twitter (Add links later)</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2026 Aliyas John — Built with pure HTML/CSS/JS
+</footer>
+
+<script>
+function openTab(evt, tabName) {
+  const section = evt.target.closest("section");
+  const contents = section.querySelectorAll(".tab-content");
+  const buttons = section.querySelectorAll(".tab-button");
+
+  contents.forEach(c => c.classList.remove("active"));
+  buttons.forEach(b => b.classList.remove("active"));
+
+  section.querySelector("#" + tabName).classList.add("active");
+  evt.currentTarget.classList.add("active");
+}
+</script>
+
+</body>
+</html>
