@@ -142,8 +142,49 @@ html {
 
 @media (max-width:768px){
   h1 { font-size: 2.5rem;}
-  section { padding: 100px 7%;}
-  .nav { right: 20px;}
+  h2 { font-size: 1.5rem; margin-bottom: 30px;}
+  section { padding: 80px 5%; min-height: auto;}
+  .nav { 
+    right: 5%; 
+    top: 20px;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 0.85rem;
+  }
+  .tabs {
+    gap: 10px;
+  }
+  .tab-button {
+    padding: 8px 20px;
+    font-size: 0.9rem;
+  }
+  .card {
+    padding: 20px;
+    font-size: 0.95rem;
+  }
+  footer {
+    padding: 30px 20px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width:480px){
+  h1 { font-size: 2rem;}
+  h2 { font-size: 1.3rem;}
+  section { padding: 60px 5%;}
+  .subtitle { font-size: 0.9rem;}
+  .nav {
+    gap: 8px;
+    font-size: 0.8rem;
+  }
+  .tab-button {
+    padding: 7px 15px;
+    font-size: 0.85rem;
+  }
+  .card {
+    padding: 15px;
+    font-size: 0.9rem;
+  }
 }
 </style>
 </head>
@@ -263,7 +304,7 @@ html {
 </section>
 
 <footer>
-  © 2026 Aliyas John — Built with pure HTML/CSS/JS
+  © 2026 Aliyas John - Built with pure HTML/CSS/JS
 </footer>
 
 <script>
