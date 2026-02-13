@@ -330,6 +330,34 @@ window.addEventListener('scroll', () => {
     }
   });
 });
+
+if (window.innerWidth <= 768) {
+  let touchStartX = 0;
+  let touchEndX = 0;
+  
+  document.addEventListener('touchstart', e => {
+    touchStartX = e.changedTouches[0].screenX;
+  });
+  
+  document.addEventListener('touchend', e => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+  });
+  
+  function handleSwipe() {
+    const sections = ['home', 'about', 'work', 'projects', 'contact'];
+    const activeLink = document.querySelector('.nav a.active');
+    const currentSection = activeLink.getAttribute('href').substring(1);
+    const currentIndex = sections.indexOf(currentSection);
+    
+    if (touchEndX < touchStartX - 50 && currentIndex < sections.length - 1) {
+      window.location.hash = sections[currentIndex + 1];
+    }
+    if (touchEndX > touchStartX + 50 && currentIndex > 0) {
+      window.location.hash = sections[currentIndex - 1];
+    }
+  }
+}
 </script>
 
 </body>
