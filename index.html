@@ -351,10 +351,14 @@ if (window.innerWidth <= 768) {
     const currentIndex = sections.indexOf(currentSection);
     
     if (touchEndX < touchStartX - 50 && currentIndex < sections.length - 1) {
+      document.documentElement.style.scrollBehavior = 'auto';
       window.location.hash = sections[currentIndex + 1];
+      setTimeout(() => { document.documentElement.style.scrollBehavior = 'smooth'; }, 100);
     }
     if (touchEndX > touchStartX + 50 && currentIndex > 0) {
+      document.documentElement.style.scrollBehavior = 'auto';
       window.location.hash = sections[currentIndex - 1];
+      setTimeout(() => { document.documentElement.style.scrollBehavior = 'smooth'; }, 100);
     }
   }
 }
