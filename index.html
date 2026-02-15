@@ -106,12 +106,51 @@ h2 {
   transition: 0.3s ease;
   min-height: 80px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .card:hover {
   border-color: var(--white);
   transform: translateY(-5px);
+}
+
+.card p {
+  margin-bottom: 12px;
+}
+
+.card p:last-child {
+  margin-bottom: 0;
+}
+
+.work-item {
+  margin-bottom: 15px;
+}
+
+.work-item:last-child {
+  margin-bottom: 0;
+}
+
+.company, .degree {
+  color: var(--white);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.company a {
+  color: var(--white);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s;
+}
+
+.company a:hover {
+  border-bottom-color: var(--white);
+}
+
+.work-desc, .college {
+  color: var(--gray);
+  line-height: 1.6;
 }
 
 .social-icons {
@@ -238,19 +277,26 @@ html {
 
   <div id="bio" class="tab-content active">
     <div class="card">
-      <p>AI developer focused on RAG systems, agentic AI and knowledge graphs. Passionate about building intelligent systems that actually solve real-world problems.</p>
+      <p>AI Engineer focused on LLMs, RAG systems, Agentic AI. Passionate about building intelligent systems that actually solve real-world problems.</p>
     </div>
   </div>
 
   <div id="education" class="tab-content">
     <div class="card">
-      <p>MCA - College of Engineering Trivandrum (CET)</p>
+      <div class="work-item">
+        <div class="degree">MCA | 2019 - 22</div>
+        <div class="college">College of Engineering Trivandrum (CET)</div>
+      </div>
+      <div class="work-item">
+        <div class="degree">BCA | 2016 - 19</div>
+        <div class="college">BPC College, Piravom</div>
+      </div>
     </div>
   </div>
 
   <div id="skills" class="tab-content">
     <div class="card">
-      <p>Python · Flask · Azure · LangChain · Neo4j · Generative AI · Vector DBs · Prompt Engineering</p>
+      <p>Python · Flask · FastAPI · Azure · LangChain · Langgraph · Neo4j · Generative AI · Vector DBs · Prompt Engineering · CrewAI · AI Agents · Agentic AI · Computer Vision</p>
     </div>
   </div>
 </section>
@@ -263,13 +309,19 @@ html {
 
   <div id="current" class="tab-content active">
     <div class="card">
-      <p>Building RAG systems and AI solutions for enterprise use cases.</p>
+      <div class="work-item">
+        <div class="company"><a href="https://artechsoft.com/" target="_blank">ART Technology and Software</a>, Kochi | Nov 2025 - Present</div>
+        <div class="work-desc">Building RAG systems and AI solutions for enterprise use cases. Automating sales outreach project using AI agents.</div>
+      </div>
     </div>
   </div>
 
   <div id="past" class="tab-content">
     <div class="card">
-      <p>Worked on AI-based visual search system using YOLO + CLIP model integration.</p>
+      <div class="work-item">
+        <div class="company"><a href="" target="_blank"> Mphasis Ltd </a>, Bengaluru | Jun 2022 - Oct 2025</div>
+        <div class="work-desc">Worked on AI-based visual search system using YOLO + CLIP model integration.</div>
+      </div>
     </div>
   </div>
 </section>
@@ -315,7 +367,7 @@ html {
   <div id="social" class="tab-content">
     <div class="card">
       <div class="social-icons">
-        <a href="https://linkedin.com/in/yourprofile" target="_blank" aria-label="LinkedIn">
+        <a href="https://www.linkedin.com/in/aliyas-john/" target="_blank" aria-label="LinkedIn">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
         </a>
         <a href="https://instagram.com/yourprofile" target="_blank" aria-label="Instagram">
@@ -354,8 +406,8 @@ window.addEventListener('scroll', () => {
     const scrollPosition = window.scrollY + window.innerHeight / 2;
     
     const distance = Math.abs(scrollPosition - (sectionTop + sectionHeight / 2));
-    const maxDistance = window.innerHeight;
-    const opacity = Math.max(0.3, 1 - (distance / maxDistance));
+    const maxDistance = window.innerHeight * 0.6;
+    const opacity = Math.max(0.4, 1 - (distance / maxDistance));
     
     section.style.opacity = opacity;
     
