@@ -34,6 +34,7 @@ section {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  transition: opacity 0.6s ease;
 }
 
 h1 {
@@ -229,8 +230,6 @@ html {
 </section>
 
 <section id="about">
-  <h2>About</h2>
-
   <div class="tabs">
     <button class="tab-button active" onclick="openTab(event,'bio')">Bio</button>
     <button class="tab-button" onclick="openTab(event,'education')">Education</button>
@@ -257,8 +256,6 @@ html {
 </section>
 
 <section id="work">
-  <h2>Work</h2>
-
   <div class="tabs">
     <button class="tab-button active" onclick="openTab(event,'current')">Current</button>
     <button class="tab-button" onclick="openTab(event,'past')">Past</button>
@@ -278,8 +275,6 @@ html {
 </section>
 
 <section id="projects">
-  <h2>Projects</h2>
-
   <div class="tabs">
     <button class="tab-button active" onclick="openTab(event,'rag')">RAG</button>
     <button class="tab-button" onclick="openTab(event,'vision')">Vision</button>
@@ -306,8 +301,6 @@ html {
 </section>
 
 <section id="contact">
-  <h2>Contact</h2>
-
   <div class="tabs">
     <button class="tab-button active" onclick="openTab(event,'email')">Email</button>
     <button class="tab-button" onclick="openTab(event,'social')">Social</button>
@@ -357,6 +350,15 @@ window.addEventListener('scroll', () => {
   let current = 'home';
   sections.forEach(section => {
     const sectionTop = section.offsetTop;
+    const sectionHeight = section.clientHeight;
+    const scrollPosition = window.scrollY + window.innerHeight / 2;
+    
+    const distance = Math.abs(scrollPosition - (sectionTop + sectionHeight / 2));
+    const maxDistance = window.innerHeight;
+    const opacity = Math.max(0.3, 1 - (distance / maxDistance));
+    
+    section.style.opacity = opacity;
+    
     if (scrollY >= sectionTop - 200) {
       current = section.getAttribute('id');
     }
@@ -369,6 +371,8 @@ window.addEventListener('scroll', () => {
     }
   });
 });
+
+window.dispatchEvent(new Event('scroll'));
 
 if (window.innerWidth <= 768) {
   let touchStartX = 0;
