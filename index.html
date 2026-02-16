@@ -201,6 +201,7 @@ h2 {
   position: fixed;
   top: 30px;
   right: 50px;
+  left: 50px;
   display: flex;
   gap: 20px;
   font-size: 0.9rem;
@@ -210,6 +211,7 @@ h2 {
   padding: 15px 25px;
   border-radius: 50px;
   border: 1px solid var(--border);
+  justify-content: flex-end;
 }
 
 .nav a {
@@ -230,30 +232,13 @@ h2 {
 }
 
 .nav-external {
-  padding: 6px 14px;
-  background: var(--white);
-  color: var(--bg);
-  border-radius: 20px;
-  font-weight: 600;
-  font-size: 0.85rem;
+  color: var(--white);
+  border-bottom: 1px solid var(--gray);
   transition: all 0.3s;
-  animation: pulse 2s ease-in-out infinite;
 }
 
 .nav-external:hover {
-  background: var(--gray);
-  color: var(--white);
-  transform: translateY(-2px);
-}
-
-.nav-external::after {
-  content: ' ↗';
-  font-size: 0.85em;
-}
-
-@keyframes pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
-  50% { box-shadow: 0 0 0 8px rgba(255, 255, 255, 0); }
+  border-bottom-color: var(--white);
 }
 
 footer {
@@ -295,7 +280,6 @@ html {
     padding: 10px 15px;
   }
   .nav-separator { display: none; }
-  .nav-external { padding: 6px 14px; font-size: 0.85rem; }
   .tabs { gap: 8px; justify-content: center;}
   .tab-button { padding: 10px 20px; font-size: 0.9rem;}
   .card { padding: 20px; line-height: 1.7;}
