@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Exploring the future of AI agents and how they're transforming automation and decision-making.">
+<meta name="keywords" content="AI Agents, Agentic AI, LangChain, CrewAI, Autonomous AI, LLM Agents">
+<meta name="author" content="Aliyas John">
+<title>The Rise of Agentic AI | Aliyas John</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #0a0a0a;
+  --white: #ffffff;
+  --gray: #888;
+  --border: #1a1a1a;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  overflow-x: hidden;
+  padding: 100px 10%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.nav {
+  position: fixed;
+  top: 30px;
+  right: 50px;
+  left: 50px;
+  display: flex;
+  gap: 20px;
+  font-size: 0.9rem;
+  z-index: 1000;
+  background: rgba(10, 10, 10, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 15px 25px;
+  border-radius: 50px;
+  border: 1px solid var(--border);
+  justify-content: flex-end;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.nav a {
+  text-decoration: none;
+  color: var(--gray);
+  transition: 0.3s;
+  display: inline-block;
+}
+
+.nav a:hover {
+  color: var(--white);
+}
+
+.post-date {
+  color: var(--gray);
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: -2px;
+  margin-bottom: 30px;
+  line-height: 1.2;
+}
+
+.post-content {
+  color: var(--gray);
+  line-height: 1.8;
+  font-size: 1.1rem;
+}
+
+.post-content h2 {
+  color: var(--white);
+  font-size: 2rem;
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+
+.post-content h3 {
+  color: var(--white);
+  font-size: 1.5rem;
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+.post-content p {
+  margin-bottom: 20px;
+}
+
+.post-content code {
+  background: var(--border);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+}
+
+.post-content pre {
+  background: var(--border);
+  padding: 20px;
+  border-radius: 10px;
+  overflow-x: auto;
+  margin: 20px 0;
+}
+
+@media (max-width:768px){
+  body { padding: 80px 6%; }
+  h1 { font-size: 2.5rem; }
+  .nav {
+    top: 20px;
+    right: 6%;
+    left: 6%;
+    padding: 12px 20px;
+  }
+}
+
+@media (max-width:480px){
+  body { padding: 60px 5%; }
+  h1 { font-size: 2rem; }
+  .post-content { font-size: 1rem; }
+  .nav { padding: 10px 15px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="nav">
+  <a href="../blog.html">Blog</a>
+  <a href="../index.html">Aliyas John</a>
+</div>
+
+<article>
+  <div class="post-date">January 20, 2026</div>
+  <h1>The Rise of Agentic AI</h1>
+  
+  <div class="post-content">
+    <p>AI agents are no longer science fiction. They're here, and they're transforming how we think about automation and decision-making in software systems.</p>
+    
+    <h2>What Are AI Agents?</h2>
+    <p>Unlike traditional AI models that simply respond to prompts, AI agents can plan, execute tasks, use tools, and make decisions autonomously. They can break down complex goals into steps and work towards achieving them.</p>
+    
+    <h3>Real-World Applications</h3>
+    <p>From automating sales outreach to managing complex workflows, AI agents are proving their worth in enterprise settings. They can research, draft emails, schedule meetings, and even make data-driven decisions.</p>
+    
+    <h2>Building with LangChain and CrewAI</h2>
+    <p>Modern frameworks like LangChain and CrewAI make it easier than ever to build sophisticated agent systems. These tools provide the building blocks for creating agents that can collaborate and solve complex problems.</p>
+    
+    <pre><code>from crewai import Agent, Task, Crew
+
+# Define an agent
+researcher = Agent(
+    role='Researcher',
+    goal='Find relevant information',
+    tools=[search_tool]
+)</code></pre>
+    
+    <h2>The Future</h2>
+    <p>As LLMs become more capable and frameworks mature, we'll see AI agents handling increasingly complex tasks. The key is building them responsibly with proper guardrails and human oversight.</p>
+  </div>
+</article>
+
+</body>
+</html>

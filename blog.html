@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI Engineering Blog by Aliyas John - Deep dives into Generative AI, LLMs, RAG systems, GPT, Machine Learning, Agentic AI, LangChain, and AI solutions.">
+<meta name="keywords" content="Generative AI, LLM, GPT, ChatGPT, RAG systems, Machine Learning, AI Engineer, Agentic AI, LangChain, Python AI, Azure AI, Neo4j, Vector Database, Prompt Engineering, AI Agents, Deep Learning, NLP, Artificial Intelligence">
+<meta name="author" content="Aliyas John">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="AI Engineering Blog | Aliyas John">
+<meta property="og:description" content="Insights on Generative AI, LLMs, RAG systems, and building intelligent AI solutions.">
+<meta property="og:type" content="website">
+<title>AI Engineering Blog | Aliyas John - Generative AI, LLMs, RAG Systems</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #0a0a0a;
+  --white: #ffffff;
+  --gray: #888;
+  --border: #1a1a1a;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  overflow-x: hidden;
+  padding: 100px 10%;
+}
+
+h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: -2px;
+  margin-bottom: 20px;
+}
+
+.subtitle {
+  color: var(--gray);
+  margin-bottom: 60px;
+  font-size: 1.1rem;
+}
+
+.nav {
+  position: fixed;
+  top: 30px;
+  right: 50px;
+  left: 50px;
+  display: flex;
+  gap: 20px;
+  font-size: 0.9rem;
+  z-index: 1000;
+  background: rgba(10, 10, 10, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 15px 25px;
+  border-radius: 50px;
+  border: 1px solid var(--border);
+  justify-content: flex-end;
+}
+
+.nav a {
+  text-decoration: none;
+  color: var(--gray);
+  transition: 0.3s;
+  display: inline-block;
+}
+
+.nav a:hover {
+  color: var(--white);
+}
+
+.back-link {
+  display: inline-block;
+  color: var(--gray);
+  text-decoration: none;
+  margin-bottom: 40px;
+  transition: color 0.3s;
+}
+
+.back-link:hover {
+  color: var(--white);
+}
+
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.blog-card {
+  padding: 30px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  transition: 0.3s ease;
+  cursor: pointer;
+}
+
+.blog-card:hover {
+  border-color: var(--white);
+  transform: translateY(-5px);
+}
+
+.blog-date {
+  color: var(--gray);
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+
+.blog-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.blog-excerpt {
+  color: var(--gray);
+  line-height: 1.6;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 100px 20px;
+  color: var(--gray);
+}
+
+@media (max-width:768px){
+  body { padding: 80px 6%; }
+  h1 { font-size: 2.5rem; }
+  .blog-grid { grid-template-columns: 1fr; }
+  .nav {
+    top: 20px;
+    right: 6%;
+    left: 6%;
+    padding: 12px 20px;
+  }
+}
+
+@media (max-width:480px){
+  body { padding: 60px 5%; }
+  h1 { font-size: 2rem; }
+  .subtitle { font-size: 1rem; margin-bottom: 40px; }
+  .blog-card { padding: 20px; }
+  .blog-title { font-size: 1.3rem; }
+  .empty-state { padding: 60px 20px; }
+  .nav {
+    padding: 10px 15px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "AI Engineering Blog by Aliyas John",
+  "description": "Insights on Generative AI, LLMs, RAG systems, and AI engineering",
+  "author": {
+    "@type": "Person",
+    "name": "Aliyas John",
+    "jobTitle": "Generative AI Engineer",
+    "url": "https://aliyasjohn.in"
+  },
+  "keywords": "Generative AI, LLM, GPT, RAG systems, Machine Learning, Agentic AI, LangChain"
+}
+</script>
+
+<div class="nav">
+  <a href="index.html">Aliyas John</a>
+</div>
+
+<h1>Blog</h1>
+<p class="subtitle">Thoughts on AI, engineering, and building intelligent systems</p>
+
+<div class="blog-grid">
+  <a href="blog/building-production-rag-systems.html" style="text-decoration: none; color: inherit;">
+    <div class="blog-card">
+      <div class="blog-date">January 15, 2026</div>
+      <h2 class="blog-title">Building Production-Ready RAG Systems</h2>
+      <p class="blog-excerpt">A deep dive into creating reliable RAG systems for enterprise applications. Learn best practices for chunking, retrieval, and LLM integration.</p>
+    </div>
+  </a>
+  
+  <a href="blog/the-rise-of-agentic-ai.html" style="text-decoration: none; color: inherit;">
+    <div class="blog-card">
+      <div class="blog-date">January 20, 2026</div>
+      <h2 class="blog-title">The Rise of Agentic AI</h2>
+      <p class="blog-excerpt">Exploring how AI agents are transforming automation and decision-making. From LangChain to CrewAI, the future is autonomous.</p>
+    </div>
+  </a>
+</div>
+
+</body>
+</html>
