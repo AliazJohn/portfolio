@@ -196,22 +196,45 @@ h1 {
 <p class="subtitle">Thoughts on AI, engineering, and building intelligent systems</p>
 
 <div class="blog-grid">
-  <a href="blog/building-production-rag-systems.html" style="text-decoration: none; color: inherit;">
+  <a href="blog/document-ingestion-strategies-for-rag-systems.html" style="text-decoration: none; color: inherit;" data-date="2026-03-08">
     <div class="blog-card">
-      <div class="blog-date">January 15, 2026</div>
-      <h2 class="blog-title">Building Production-Ready RAG Systems</h2>
-      <p class="blog-excerpt">A deep dive into creating reliable RAG systems for enterprise applications. Learn best practices for chunking, retrieval, and LLM integration.</p>
+      <div class="blog-date">March 08, 2026</div>
+      <h2 class="blog-title">Document Ingestion Strategies for RAG Systems</h2>
+      <p class="blog-excerpt">Building a RAG system is easy in demos but becomes tricky with real documents. PDFs with tables, charts, and complex layouts can break naive chunking approaches. In this post, I discuss document ingestion patterns that help improve retrieval quality in production RAG systems.</p>
     </div>
   </a>
-  
-  <a href="blog/the-rise-of-agentic-ai.html" style="text-decoration: none; color: inherit;">
+
+  <a href="blog/the-rise-of-agentic-ai.html" style="text-decoration: none; color: inherit;" data-date="2026-01-20">
     <div class="blog-card">
       <div class="blog-date">January 20, 2026</div>
       <h2 class="blog-title">The Rise of Agentic AI</h2>
       <p class="blog-excerpt">Exploring how AI agents are transforming automation and decision-making. From LangChain to CrewAI, the future is autonomous.</p>
     </div>
   </a>
+
+  <a href="blog/building-production-rag-systems.html" style="text-decoration: none; color: inherit;" data-date="2026-01-15">
+    <div class="blog-card">
+      <div class="blog-date">January 15, 2026</div>
+      <h2 class="blog-title">Building Production-Ready RAG Systems</h2>
+      <p class="blog-excerpt">A deep dive into creating reliable RAG systems for enterprise applications. Learn best practices for chunking, retrieval, and LLM integration.</p>
+    </div>
+  </a>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const grid = document.querySelector('.blog-grid');
+  const posts = Array.from(grid.children);
+  
+  posts.sort((a, b) => {
+    const dateA = new Date(a.dataset.date);
+    const dateB = new Date(b.dataset.date);
+    return dateB - dateA;
+  });
+  
+  posts.forEach(post => grid.appendChild(post));
+});
+</script>
 
 </body>
 </html>
