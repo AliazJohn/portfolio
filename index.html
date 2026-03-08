@@ -164,17 +164,28 @@ h2 {
   border-bottom-color: var(--white);
 }
 
-.work-desc, .college {
+.work-desc {
   color: var(--gray);
   line-height: 1.6;
+  margin-bottom: 8px;
+  padding-left: 15px;
+  position: relative;
 }
 
-.work-desc p {
-  margin-bottom: 6px;
+.work-desc:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--gray);
 }
 
-.work-desc p:last-child {
+.work-desc:last-child {
   margin-bottom: 0;
+}
+
+.college {
+  color: var(--gray);
+  line-height: 1.6;
 }
 
 .social-icons {
@@ -372,10 +383,8 @@ html {
     <div class="card">
       <div class="work-item">
         <div class="company"><a href="https://artechsoft.com/" target="_blank">ART Technology and Software</a>, Kochi | Nov 2025 - Present</div>
-        <div class="work-desc">
-          <p>Building RAG systems and AI solutions for enterprise use cases.</p>
-          <p>Automated sales outreach using AI agents.</p>
-        </div>
+        <div class="work-desc">Building RAG systems and AI solutions for enterprise use cases.</div>
+        <div class="work-desc">Automated sales outreach using AI agents.</div>
       </div>
     </div>
   </div>
@@ -383,8 +392,10 @@ html {
   <div id="past" class="tab-content">
     <div class="card">
       <div class="work-item">
-        <div class="company"><a href="" target="_blank"> Mphasis Ltd </a>, Bengaluru | Jun 2022 - Oct 2025</div>
-        <div class="work-desc">Worked on AI-based visual search system using YOLO + CLIP model integration.</div>
+      <div class="company"><a href="" target="_blank">Mphasis Ltd</a>, Bengaluru | Jun 2022 - Oct 2025</div>
+      <div class="work-desc">Implemented an AI-based visual search solution using YOLO for object detection and CLIP for semantic matching.</div>
+      <div class="work-desc">Built a multimodal RAG chatbot integrated with APIs to support logistics operations.</div>
+      <div class="work-desc">Developed a multi-agent AI chatbot system for supply chain management tasks.</div>
       </div>
     </div>
   </div>
