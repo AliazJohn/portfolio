@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z2X15WEGYG"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-Z2X15WEGYG');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Part 3: Learn how race conditions happen in concurrent systems and how locks and atomic operations prevent data corruption in production backends.">
+<meta name="keywords" content="race conditions, locks, atomic operations, data consistency, concurrent programming, database locks, backend safety">
+<meta name="author" content="Aliyas John">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Race Conditions, Locks and Safe Data Handling - Part 3 | Aliyas John">
+<meta property="og:description" content="Preventing data corruption in concurrent backend systems">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://aliyasjohn.in/blog/backend-request-part-3-race-conditions-locks.html">
+<title>Race Conditions, Locks and Safe Data Handling - Part 3 | Aliyas John</title>
+<link rel="icon" type="image/png" href="../favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #0a0a0a;
+  --white: #ffffff;
+  --gray: #888;
+  --border: #1a1a1a;
+  --accent: #4a9eff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  overflow-x: hidden;
+  padding: 100px 10%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.nav {
+  position: fixed;
+  top: 30px;
+  right: 50px;
+  display: flex;
+  gap: 20px;
+  font-size: 0.9rem;
+  z-index: 1000;
+  background: rgba(10, 10, 10, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 15px 25px;
+  border-radius: 50px;
+  border: 1px solid var(--border);
+}
+
+.nav a {
+  text-decoration: none;
+  color: var(--gray);
+  transition: 0.3s;
+  display: inline-block;
+}
+
+.nav a:hover {
+  color: var(--white);
+}
+
+.series-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: var(--white);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.post-date {
+  color: var(--gray);
+  margin-bottom: 10px;
+}
+
+h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: -2px;
+  margin-bottom: 15px;
+  line-height: 1.2;
+}
+
+.series-title {
+  color: var(--accent);
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+.post-content {
+  color: var(--gray);
+  line-height: 1.8;
+  font-size: 1.1rem;
+}
+
+.post-content h2 {
+  color: var(--white);
+  font-size: 2rem;
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+
+.post-content h3 {
+  color: var(--white);
+  font-size: 1.4rem;
+  margin-top: 25px;
+  margin-bottom: 10px;
+}
+
+.post-content p {
+  margin-bottom: 18px;
+}
+
+.post-content code {
+  background: var(--border);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.post-content pre {
+  background: var(--border);
+  padding: 20px;
+  border-radius: 10px;
+  overflow-x: auto;
+  margin: 20px 0;
+}
+
+.series-nav {
+  margin-top: 50px;
+  padding: 30px;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  background: rgba(74, 158, 255, 0.05);
+}
+
+.series-nav h3 {
+  color: var(--white);
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+}
+
+.series-list {
+  list-style: none;
+}
+
+.series-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.series-list li:last-child {
+  border-bottom: none;
+}
+
+.series-list a {
+  color: var(--gray);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.series-list a:hover {
+  color: var(--white);
+}
+
+.series-list .current {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.next-post {
+  margin-top: 40px;
+  padding: 25px;
+  border: 1px solid var(--accent);
+  border-radius: 15px;
+  background: rgba(74, 158, 255, 0.05);
+}
+
+.next-post-label {
+  color: var(--accent);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.next-post a {
+  color: var(--white);
+  text-decoration: none;
+  font-size: 1.3rem;
+  font-weight: 600;
+  transition: color 0.3s;
+}
+
+.next-post a:hover {
+  color: var(--accent);
+}
+
+@media (max-width:768px){
+  body { padding: 80px 6%; }
+  h1 { font-size: 2.5rem; }
+  .nav {
+    top: 20px;
+    right: 6%;
+    padding: 12px 20px;
+  }
+}
+
+@media (max-width:480px){
+  body { padding: 60px 5%; }
+  h1 { font-size: 2rem; }
+  .post-content { font-size: 1rem; }
+  .nav { padding: 10px 15px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="nav">
+<a href="../blog.html">Blog</a>
+<a href="../index.html">Author</a>
+</div>
+
+<article>
+
+<div class="series-badge">SERIES 1 • PART 3 OF 4</div>
+<div class="post-date">March 06, 2026</div>
+
+<h1>Race Conditions, Locks and Safe Data Handling</h1>
+<div class="series-title">The Life of a Backend Request - How Real APIs Work</div>
+
+<div class="post-content">
+
+<p>
+The tech fest registration system is now popular.
+</p>
+
+<p>
+But a bug appears.
+</p>
+
+<p>
+Two students manage to register for the last seat of an event.
+</p>
+
+<p>
+How did that happen?
+</p>
+
+<h2>Race conditions</h2>
+
+<p>
+Imagine there is one seat left.
+</p>
+
+<p>
+Two workers check the database simultaneously.
+</p>
+
+<pre><code>
+Worker 1 → seats_available = 1
+Worker 2 → seats_available = 1
+</code></pre>
+
+<p>
+Both proceed to reserve the seat.
+</p>
+
+<p>
+Now the event is overbooked.
+</p>
+
+<p>
+This problem is called a race condition.
+Multiple processes race to update the same resource.
+</p>
+
+<h2>Using locks</h2>
+
+<p>
+A lock ensures only one worker accesses a critical section at a time.
+</p>
+
+<pre><code>
+Worker A acquires lock
+↓
+Checks seat count
+↓
+Reserves seat
+↓
+Releases lock
+</code></pre>
+
+<p>
+Worker B must wait until the lock is released.
+</p>
+
+<p>
+The worker that gets the lock first wins.
+</p>
+
+<h3>Implementing locks in Python</h3>
+
+<pre><code>
+import redis
+
+redis_client = redis.Redis()
+
+def reserve_seat(event_id, student_id):
+    lock_key = f"lock:event:{event_id}"
+    
+    # Try to acquire lock
+    lock = redis_client.lock(lock_key, timeout=5)
+    
+    if lock.acquire(blocking=True):
+        try:
+            # Critical section
+            seats = get_available_seats(event_id)
+            if seats > 0:
+                save_registration(event_id, student_id)
+                return True
+            return False
+        finally:
+            lock.release()
+</code></pre>
+
+<p>
+Redis locks work across multiple workers because Redis is a shared resource.
+</p>
+
+<h2>Database-level locks</h2>
+
+<p>
+Databases also provide locking mechanisms.
+</p>
+
+<pre><code>
+SELECT * FROM events 
+WHERE event_id = 123 
+FOR UPDATE;
+</code></pre>
+
+<p>
+The FOR UPDATE clause locks the row until the transaction completes.
+</p>
+
+<p>
+Other workers trying to read that row will wait.
+</p>
+
+<h2>Atomic writes</h2>
+
+<p>
+Another issue appears when writing data.
+</p>
+
+<p>
+Suppose the server crashes while writing a file.
+</p>
+
+<p>
+The file may look like this:
+</p>
+
+<pre><code>
+{
+ "name": "Rahul",
+ "email":
+</code></pre>
+
+<p>
+This is a partial write.
+</p>
+
+<p>
+To prevent corruption, systems use atomic writes.
+</p>
+
+<p>
+Instead of writing directly to the final file:
+</p>
+
+<pre><code>
+registrations.json
+</code></pre>
+
+<p>
+We write to a temporary file:
+</p>
+
+<pre><code>
+registrations.tmp
+</code></pre>
+
+<p>
+Then rename it:
+</p>
+
+<pre><code>
+registrations.tmp → registrations.json
+</code></pre>
+
+<p>
+File renaming is atomic, meaning the file appears completely or not at all.
+</p>
+
+<h3>Atomic writes in Python</h3>
+
+<pre><code>
+import os
+import json
+
+def save_registration_safely(data):
+    temp_file = "registrations.tmp"
+    final_file = "registrations.json"
+    
+    # Write to temp file
+    with open(temp_file, 'w') as f:
+        json.dump(data, f)
+    
+    # Atomic rename
+    os.replace(temp_file, final_file)
+</code></pre>
+
+<h2>Database transactions</h2>
+
+<p>
+Databases handle atomicity through transactions.
+</p>
+
+<pre><code>
+BEGIN TRANSACTION;
+
+UPDATE events SET seats_available = seats_available - 1 
+WHERE event_id = 123;
+
+INSERT INTO registrations (student_id, event_id) 
+VALUES (456, 123);
+
+COMMIT;
+</code></pre>
+
+<p>
+Either both operations succeed, or both fail.
+There is no partial state.
+</p>
+
+<p>
+But backend systems interact with external services too.
+</p>
+
+<p>
+And external systems fail.
+</p>
+
+<p>
+That introduces the next challenge.
+</p>
+
+</div>
+
+<div class="next-post">
+  <div class="next-post-label">NEXT IN SERIES →</div>
+  <a href="backend-request-part-4-production-reliability.html">Part 4: Making APIs Reliable in the Real World</a>
+</div>
+
+<div class="series-nav">
+  <h3>The Life of a Backend Request Series</h3>
+  <ul class="series-list">
+    <li><a href="backend-request-part-1-workers-load-balancers.html">Part 1: When Hundreds of Users Hit Your API</a></li>
+    <li><a href="backend-request-part-2-async-concurrency.html">Part 2: Why Async APIs Can Handle Thousands of Requests</a></li>
+    <li><span class="current">Part 3: Race Conditions, Locks and Safe Data Handling</span></li>
+    <li><a href="backend-request-part-4-production-reliability.html">Part 4: Making APIs Reliable in the Real World</a></li>
+  </ul>
+</div>
+
+</article>
+
+</body>
+</html>

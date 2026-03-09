@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z2X15WEGYG"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-Z2X15WEGYG');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Part 1: Learn how backend workers and load balancers handle hundreds of concurrent requests in production systems. A practical guide using a real-world tech fest registration system.">
+<meta name="keywords" content="backend engineering, workers, load balancer, concurrency, Gunicorn, FastAPI, API design, system design, backend architecture">
+<meta name="author" content="Aliyas John">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="When Hundreds of Users Hit Your API - Part 1 | Aliyas John">
+<meta property="og:description" content="Understanding workers, load balancers and concurrency in backend systems">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://aliyasjohn.in/blog/backend-request-part-1-workers-load-balancers.html">
+<title>When Hundreds of Users Hit Your API - Part 1 | Aliyas John</title>
+<link rel="icon" type="image/png" href="../favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #0a0a0a;
+  --white: #ffffff;
+  --gray: #888;
+  --border: #1a1a1a;
+  --accent: #4a9eff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  overflow-x: hidden;
+  padding: 100px 10%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.nav {
+  position: fixed;
+  top: 30px;
+  right: 50px;
+  display: flex;
+  gap: 20px;
+  font-size: 0.9rem;
+  z-index: 1000;
+  background: rgba(10, 10, 10, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 15px 25px;
+  border-radius: 50px;
+  border: 1px solid var(--border);
+}
+
+.nav a {
+  text-decoration: none;
+  color: var(--gray);
+  transition: 0.3s;
+  display: inline-block;
+}
+
+.nav a:hover {
+  color: var(--white);
+}
+
+.series-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: var(--white);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.post-date {
+  color: var(--gray);
+  margin-bottom: 10px;
+}
+
+h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: -2px;
+  margin-bottom: 15px;
+  line-height: 1.2;
+}
+
+.series-title {
+  color: var(--accent);
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+.post-content {
+  color: var(--gray);
+  line-height: 1.8;
+  font-size: 1.1rem;
+}
+
+.post-content h2 {
+  color: var(--white);
+  font-size: 2rem;
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+
+.post-content h3 {
+  color: var(--white);
+  font-size: 1.4rem;
+  margin-top: 25px;
+  margin-bottom: 10px;
+}
+
+.post-content p {
+  margin-bottom: 18px;
+}
+
+.post-content code {
+  background: var(--border);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.post-content pre {
+  background: var(--border);
+  padding: 20px;
+  border-radius: 10px;
+  overflow-x: auto;
+  margin: 20px 0;
+}
+
+.series-nav {
+  margin-top: 50px;
+  padding: 30px;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  background: rgba(74, 158, 255, 0.05);
+}
+
+.series-nav h3 {
+  color: var(--white);
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+}
+
+.series-list {
+  list-style: none;
+}
+
+.series-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.series-list li:last-child {
+  border-bottom: none;
+}
+
+.series-list a {
+  color: var(--gray);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.series-list a:hover {
+  color: var(--white);
+}
+
+.series-list .current {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.next-post {
+  margin-top: 40px;
+  padding: 25px;
+  border: 1px solid var(--accent);
+  border-radius: 15px;
+  background: rgba(74, 158, 255, 0.05);
+}
+
+.next-post-label {
+  color: var(--accent);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.next-post a {
+  color: var(--white);
+  text-decoration: none;
+  font-size: 1.3rem;
+  font-weight: 600;
+  transition: color 0.3s;
+}
+
+.next-post a:hover {
+  color: var(--accent);
+}
+
+@media (max-width:768px){
+  body { padding: 80px 6%; }
+  h1 { font-size: 2.5rem; }
+  .nav {
+    top: 20px;
+    right: 6%;
+    padding: 12px 20px;
+  }
+}
+
+@media (max-width:480px){
+  body { padding: 60px 5%; }
+  h1 { font-size: 2rem; }
+  .post-content { font-size: 1rem; }
+  .nav { padding: 10px 15px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="nav">
+<a href="../blog.html">Blog</a>
+<a href="../index.html">Author</a>
+</div>
+
+<article>
+
+<div class="series-badge">SERIES 1 • PART 1 OF 4</div>
+<div class="post-date">March 04, 2026</div>
+
+<h1>When Hundreds of Users Hit Your API</h1>
+<div class="series-title">The Life of a Backend Request - How Real APIs Work</div>
+
+<div class="post-content">
+
+<p>
+When we first build a backend API, things look very simple.
+</p>
+
+<p>
+A request comes in, the server processes it, and a response goes out.
+</p>
+
+<p>
+For example, imagine we are building a backend for a school tech fest registration system.
+Students from different schools can register for events like coding competitions, robotics challenges, and quizzes.
+</p>
+
+<p>
+Our backend uses a simple stack:
+</p>
+
+<p>
+<strong>FastAPI</strong> for the backend framework<br>
+<strong>Gunicorn</strong> as the server<br>
+<strong>PostgreSQL</strong> as the database<br>
+<strong>Redis workers</strong> for background jobs<br>
+<strong>External email service</strong> for confirmations
+</p>
+
+<p>
+The architecture roughly looks like this:
+</p>
+
+<pre><code>
+Students
+   ↓
+Load Balancer
+   ↓
+Gunicorn
+   ↓
+Worker Processes
+   ↓
+FastAPI
+   ↓
+Database + External APIs
+</code></pre>
+
+<p>
+A registration endpoint might look like this:
+</p>
+
+<pre><code>
+@app.post("/register")
+async def register(student: Student):
+    save_registration(student)
+    reserve_seat(student)
+    generate_ticket(student)
+    send_confirmation_email(student)
+</code></pre>
+
+<p>
+Looks harmless.
+</p>
+
+<p>
+But the moment the registration link is shared in the school WhatsApp group,
+hundreds of students start clicking Register.
+</p>
+
+<p>
+Now the backend has a real problem.
+</p>
+
+<h2>The first challenge: too many requests</h2>
+
+<p>
+If the server processed requests one by one, every student would wait for the previous one.
+</p>
+
+<p>
+That is not acceptable for real systems.
+</p>
+
+<p>
+Instead, backend servers run multiple worker processes.
+</p>
+
+<p>
+A process is simply a running instance of a program managed by the operating system.
+</p>
+
+<p>
+When we start our server like this:
+</p>
+
+<pre><code>
+gunicorn -w 4 main:app
+</code></pre>
+
+<p>
+Gunicorn creates:
+</p>
+
+<p>
+<strong>1 master process</strong><br>
+<strong>4 worker processes</strong>
+</p>
+
+<p>
+Each worker loads the same backend code.
+</p>
+
+<pre><code>
+Gunicorn Master
+   |
+   |--- Worker 1 → FastAPI running
+   |--- Worker 2 → FastAPI running
+   |--- Worker 3 → FastAPI running
+   |--- Worker 4 → FastAPI running
+</code></pre>
+
+<p>
+So yes - our backend application is essentially running four times, once inside each worker.
+</p>
+
+<p>
+Each worker can:
+</p>
+
+<p>
+• receive HTTP requests<br>
+• execute backend logic<br>
+• return responses
+</p>
+
+<h2>How requests reach workers</h2>
+
+<p>
+Before reaching workers, requests usually pass through a load balancer.
+</p>
+
+<p>
+A load balancer distributes incoming traffic across available workers.
+</p>
+
+<pre><code>
+Students → Load Balancer
+                 ↓
+        Worker 1  Worker 2  Worker 3  Worker 4
+</code></pre>
+
+<p>
+In many production systems the flow is:
+</p>
+
+<pre><code>
+Internet
+   ↓
+Nginx (Load Balancer)
+   ↓
+Gunicorn
+   ↓
+Workers
+</code></pre>
+
+<p>
+The load balancer spreads traffic, while Gunicorn manages workers.
+</p>
+
+<h2>If there are 4 workers, can only 4 users connect?</h2>
+
+<p>
+No.
+</p>
+
+<p>
+Workers are not fixed seats.
+</p>
+
+<p>
+Think of them like cashiers in a supermarket.
+If there are four cashiers, hundreds of customers can still enter the store.
+Each cashier serves one customer at a time and then moves to the next.
+</p>
+
+<p>
+Workers behave the same way.
+</p>
+
+<h2>Why workers alone are not enough</h2>
+
+<p>
+Even with workers, something else slows the system down.
+</p>
+
+<p>
+Network calls.
+</p>
+
+<p>
+For example:
+</p>
+
+<pre><code>
+send_confirmation_email(student)
+</code></pre>
+
+<p>
+This operation might take two seconds.
+</p>
+
+<p>
+If the worker waits for those two seconds doing nothing, performance drops quickly.
+</p>
+
+<p>
+This is where asynchronous programming becomes important.
+</p>
+
+<p>
+And that is where our backend story continues.
+</p>
+
+</div>
+
+<div class="next-post">
+  <div class="next-post-label">NEXT IN SERIES →</div>
+  <a href="backend-request-part-2-async-concurrency.html">Part 2: Why Async APIs Can Handle Thousands of Requests</a>
+</div>
+
+<div class="series-nav">
+  <h3>The Life of a Backend Request Series</h3>
+  <ul class="series-list">
+    <li><span class="current">Part 1: When Hundreds of Users Hit Your API</span></li>
+    <li><a href="backend-request-part-2-async-concurrency.html">Part 2: Why Async APIs Can Handle Thousands of Requests</a></li>
+    <li><a href="backend-request-part-3-race-conditions-locks.html">Part 3: Race Conditions, Locks and Safe Data Handling</a></li>
+    <li><a href="backend-request-part-4-production-reliability.html">Part 4: Making APIs Reliable in the Real World</a></li>
+  </ul>
+</div>
+
+</article>
+
+</body>
+</html>

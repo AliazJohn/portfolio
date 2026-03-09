@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z2X15WEGYG"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-Z2X15WEGYG');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Part 2: Understand how async programming enables backend APIs to handle thousands of concurrent requests efficiently. Learn the difference between blocking and non-blocking I/O.">
+<meta name="keywords" content="async programming, concurrency, non-blocking I/O, FastAPI async, Python asyncio, backend performance, API optimization">
+<meta name="author" content="Aliyas John">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Why Async APIs Can Handle Thousands of Requests - Part 2 | Aliyas John">
+<meta property="og:description" content="The secret behind high concurrency in modern backend systems">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://aliyasjohn.in/blog/backend-request-part-2-async-concurrency.html">
+<title>Why Async APIs Can Handle Thousands of Requests - Part 2 | Aliyas John</title>
+<link rel="icon" type="image/png" href="../favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #0a0a0a;
+  --white: #ffffff;
+  --gray: #888;
+  --border: #1a1a1a;
+  --accent: #4a9eff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  overflow-x: hidden;
+  padding: 100px 10%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.nav {
+  position: fixed;
+  top: 30px;
+  right: 50px;
+  display: flex;
+  gap: 20px;
+  font-size: 0.9rem;
+  z-index: 1000;
+  background: rgba(10, 10, 10, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 15px 25px;
+  border-radius: 50px;
+  border: 1px solid var(--border);
+}
+
+.nav a {
+  text-decoration: none;
+  color: var(--gray);
+  transition: 0.3s;
+  display: inline-block;
+}
+
+.nav a:hover {
+  color: var(--white);
+}
+
+.series-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: var(--white);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.post-date {
+  color: var(--gray);
+  margin-bottom: 10px;
+}
+
+h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: -2px;
+  margin-bottom: 15px;
+  line-height: 1.2;
+}
+
+.series-title {
+  color: var(--accent);
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+.post-content {
+  color: var(--gray);
+  line-height: 1.8;
+  font-size: 1.1rem;
+}
+
+.post-content h2 {
+  color: var(--white);
+  font-size: 2rem;
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+
+.post-content h3 {
+  color: var(--white);
+  font-size: 1.4rem;
+  margin-top: 25px;
+  margin-bottom: 10px;
+}
+
+.post-content p {
+  margin-bottom: 18px;
+}
+
+.post-content code {
+  background: var(--border);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.post-content pre {
+  background: var(--border);
+  padding: 20px;
+  border-radius: 10px;
+  overflow-x: auto;
+  margin: 20px 0;
+}
+
+.series-nav {
+  margin-top: 50px;
+  padding: 30px;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  background: rgba(74, 158, 255, 0.05);
+}
+
+.series-nav h3 {
+  color: var(--white);
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+}
+
+.series-list {
+  list-style: none;
+}
+
+.series-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.series-list li:last-child {
+  border-bottom: none;
+}
+
+.series-list a {
+  color: var(--gray);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.series-list a:hover {
+  color: var(--white);
+}
+
+.series-list .current {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.next-post {
+  margin-top: 40px;
+  padding: 25px;
+  border: 1px solid var(--accent);
+  border-radius: 15px;
+  background: rgba(74, 158, 255, 0.05);
+}
+
+.next-post-label {
+  color: var(--accent);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.next-post a {
+  color: var(--white);
+  text-decoration: none;
+  font-size: 1.3rem;
+  font-weight: 600;
+  transition: color 0.3s;
+}
+
+.next-post a:hover {
+  color: var(--accent);
+}
+
+@media (max-width:768px){
+  body { padding: 80px 6%; }
+  h1 { font-size: 2.5rem; }
+  .nav {
+    top: 20px;
+    right: 6%;
+    padding: 12px 20px;
+  }
+}
+
+@media (max-width:480px){
+  body { padding: 60px 5%; }
+  h1 { font-size: 2rem; }
+  .post-content { font-size: 1rem; }
+  .nav { padding: 10px 15px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="nav">
+<a href="../blog.html">Blog</a>
+<a href="../index.html">Author</a>
+</div>
+
+<article>
+
+<div class="series-badge">SERIES 1 • PART 2 OF 4</div>
+<div class="post-date">March 05, 2026</div>
+
+<h1>Why Async APIs Can Handle Thousands of Requests</h1>
+<div class="series-title">The Life of a Backend Request - How Real APIs Work</div>
+
+<div class="post-content">
+
+<p>
+The registration system is now receiving many requests.
+</p>
+
+<p>
+Workers are handling them, but another problem appears.
+</p>
+
+<p>
+Many operations in backend systems involve waiting.
+</p>
+
+<p>
+Examples:
+</p>
+
+<p>
+• database queries<br>
+• external API calls<br>
+• file storage<br>
+• sending emails
+</p>
+
+<p>
+These operations involve I/O (input/output).
+</p>
+
+<h2>Blocking I/O</h2>
+
+<p>
+If an operation is blocking, the worker waits.
+</p>
+
+<p>
+Example timeline:
+</p>
+
+<pre><code>
+Worker receives Student A
+↓
+Calls email API
+↓
+Waits 2 seconds
+↓
+Returns response
+</code></pre>
+
+<p>
+During those two seconds, the worker cannot serve another request.
+</p>
+
+<p>
+If 100 students register and each email takes 2 seconds,
+the last student waits 200 seconds (over 3 minutes).
+</p>
+
+<p>
+That is unacceptable.
+</p>
+
+<h2>Async I/O</h2>
+
+<p>
+Async programming allows the worker to start an operation and continue doing other work while waiting.
+</p>
+
+<p>
+Example:
+</p>
+
+<pre><code>
+Worker starts email request for Student A
+↓
+Email service responding...
+↓
+Worker processes Student B registration
+</code></pre>
+
+<p>
+Inside a single worker, the activity may look like this:
+</p>
+
+<pre><code>
+Worker 1
+---------
+Student A → waiting for email
+Student B → validating request
+Student C → saving to database
+Student D → waiting for DB response
+</code></pre>
+
+<p>
+The worker is not idle.
+It switches between tasks whenever one is waiting for I/O.
+</p>
+
+<h2>How async works in FastAPI</h2>
+
+<p>
+When you define an endpoint with async:
+</p>
+
+<pre><code>
+@app.post("/register")
+async def register(student: Student):
+    await save_to_database(student)
+    await send_email(student)
+</code></pre>
+
+<p>
+The await keyword tells the worker:
+"This operation will take time. Do something else while waiting."
+</p>
+
+<p>
+Without await, the operation blocks.
+</p>
+
+<h2>Why a few workers can handle thousands of requests</h2>
+
+<p>
+Workers provide process-level concurrency.
+</p>
+
+<p>
+Async programming provides I/O concurrency inside each worker.
+</p>
+
+<p>
+Together they allow backend systems to handle many requests efficiently.
+</p>
+
+<p>
+For example:
+</p>
+
+<p>
+<strong>4 workers</strong> (process-level concurrency)<br>
+<strong>Each handling 250 async operations</strong> (I/O concurrency)<br>
+<strong>Total: 1000 concurrent requests</strong>
+</p>
+
+<p>
+But high concurrency introduces another challenge.
+</p>
+
+<p>
+When multiple workers modify the same data, things can break.
+</p>
+
+<p>
+And that is where race conditions begin.
+</p>
+
+</div>
+
+<div class="next-post">
+  <div class="next-post-label">NEXT IN SERIES →</div>
+  <a href="backend-request-part-3-race-conditions-locks.html">Part 3: Race Conditions, Locks and Safe Data Handling</a>
+</div>
+
+<div class="series-nav">
+  <h3>The Life of a Backend Request Series</h3>
+  <ul class="series-list">
+    <li><a href="backend-request-part-1-workers-load-balancers.html">Part 1: When Hundreds of Users Hit Your API</a></li>
+    <li><span class="current">Part 2: Why Async APIs Can Handle Thousands of Requests</span></li>
+    <li><a href="backend-request-part-3-race-conditions-locks.html">Part 3: Race Conditions, Locks and Safe Data Handling</a></li>
+    <li><a href="backend-request-part-4-production-reliability.html">Part 4: Making APIs Reliable in the Real World</a></li>
+  </ul>
+</div>
+
+</article>
+
+</body>
+</html>

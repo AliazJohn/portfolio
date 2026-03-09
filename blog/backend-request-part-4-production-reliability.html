@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z2X15WEGYG"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-Z2X15WEGYG');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Part 4: Learn how production APIs handle failures with retries, authentication, background jobs, and idempotency. The complete guide to building reliable backend systems.">
+<meta name="keywords" content="API reliability, retries, exponential backoff, idempotency, background jobs, API authentication, production systems, backend engineering">
+<meta name="author" content="Aliyas John">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Making APIs Reliable in the Real World - Part 4 | Aliyas John">
+<meta property="og:description" content="Building production-ready backend systems that handle failures gracefully">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://aliyasjohn.in/blog/backend-request-part-4-production-reliability.html">
+<title>Making APIs Reliable in the Real World - Part 4 | Aliyas John</title>
+<link rel="icon" type="image/png" href="../favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #0a0a0a;
+  --white: #ffffff;
+  --gray: #888;
+  --border: #1a1a1a;
+  --accent: #4a9eff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  overflow-x: hidden;
+  padding: 100px 10%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.nav {
+  position: fixed;
+  top: 30px;
+  right: 50px;
+  display: flex;
+  gap: 20px;
+  font-size: 0.9rem;
+  z-index: 1000;
+  background: rgba(10, 10, 10, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 15px 25px;
+  border-radius: 50px;
+  border: 1px solid var(--border);
+}
+
+.nav a {
+  text-decoration: none;
+  color: var(--gray);
+  transition: 0.3s;
+  display: inline-block;
+}
+
+.nav a:hover {
+  color: var(--white);
+}
+
+.series-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: var(--white);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.post-date {
+  color: var(--gray);
+  margin-bottom: 10px;
+}
+
+h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: -2px;
+  margin-bottom: 15px;
+  line-height: 1.2;
+}
+
+.series-title {
+  color: var(--accent);
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+.post-content {
+  color: var(--gray);
+  line-height: 1.8;
+  font-size: 1.1rem;
+}
+
+.post-content h2 {
+  color: var(--white);
+  font-size: 2rem;
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+
+.post-content h3 {
+  color: var(--white);
+  font-size: 1.4rem;
+  margin-top: 25px;
+  margin-bottom: 10px;
+}
+
+.post-content p {
+  margin-bottom: 18px;
+}
+
+.post-content code {
+  background: var(--border);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.post-content pre {
+  background: var(--border);
+  padding: 20px;
+  border-radius: 10px;
+  overflow-x: auto;
+  margin: 20px 0;
+}
+
+.series-nav {
+  margin-top: 50px;
+  padding: 30px;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  background: rgba(74, 158, 255, 0.05);
+}
+
+.series-nav h3 {
+  color: var(--white);
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+}
+
+.series-list {
+  list-style: none;
+}
+
+.series-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.series-list li:last-child {
+  border-bottom: none;
+}
+
+.series-list a {
+  color: var(--gray);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.series-list a:hover {
+  color: var(--white);
+}
+
+.series-list .current {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+@media (max-width:768px){
+  body { padding: 80px 6%; }
+  h1 { font-size: 2.5rem; }
+  .nav {
+    top: 20px;
+    right: 6%;
+    padding: 12px 20px;
+  }
+}
+
+@media (max-width:480px){
+  body { padding: 60px 5%; }
+  h1 { font-size: 2rem; }
+  .post-content { font-size: 1rem; }
+  .nav { padding: 10px 15px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="nav">
+<a href="../blog.html">Blog</a>
+<a href="../index.html">Author</a>
+</div>
+
+<article>
+
+<div class="series-badge">SERIES 1 • PART 4 OF 4</div>
+<div class="post-date">March 07, 2026</div>
+
+<h1>Making APIs Reliable in the Real World</h1>
+<div class="series-title">The Life of a Backend Request - How Real APIs Work</div>
+
+<div class="post-content">
+
+<p>
+Our backend now handles concurrency correctly.
+</p>
+
+<p>
+But real systems must also deal with network failures and distributed systems issues.
+</p>
+
+<h2>External APIs fail sometimes</h2>
+
+<p>
+When calling services like email providers, we might receive errors like:
+</p>
+
+<pre><code>
+503 Service Unavailable
+</code></pre>
+
+<p>
+Instead of failing immediately, systems use retries with exponential backoff.
+</p>
+
+<h3>Exponential backoff</h3>
+
+<p>
+Example:
+</p>
+
+<pre><code>
+Attempt 1 → wait 1 second
+Attempt 2 → wait 2 seconds
+Attempt 3 → wait 4 seconds
+Attempt 4 → wait 8 seconds
+</code></pre>
+
+<p>
+The wait time doubles after each failure.
+</p>
+
+<p>
+This prevents overwhelming a service that is already struggling.
+</p>
+
+<h3>Implementing retries in Python</h3>
+
+<pre><code>
+import time
+
+def send_email_with_retry(student_email, max_retries=3):
+    for attempt in range(max_retries):
+        try:
+            send_email(student_email)
+            return True
+        except Exception as e:
+            if attempt < max_retries - 1:
+                wait_time = 2 ** attempt  # 1, 2, 4 seconds
+                time.sleep(wait_time)
+            else:
+                # Log failure and move to dead letter queue
+                log_failed_email(student_email)
+                return False
+</code></pre>
+
+<h2>Authentication with headers</h2>
+
+<p>
+APIs must verify who is calling them.
+</p>
+
+<p>
+Instead of sending credentials in URLs, systems use headers.
+</p>
+
+<pre><code>
+Authorization: Bearer TOKEN
+</code></pre>
+
+<p>
+Tokens are generated when a user logs in and stored by the client (browser, mobile app, etc).
+</p>
+
+<p>
+Each request includes the token so the server can verify identity.
+</p>
+
+<h3>Example in FastAPI</h3>
+
+<pre><code>
+from fastapi import Header, HTTPException
+
+@app.post("/register")
+async def register(
+    student: Student,
+    authorization: str = Header(None)
+):
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    
+    token = authorization.split(" ")[1]
+    user = verify_token(token)
+    
+    if not user:
+        raise HTTPException(status_code=401, detail="Invalid token")
+    
+    # Process registration
+</code></pre>
+
+<h2>Long-running tasks</h2>
+
+<p>
+Some tasks take time.
+</p>
+
+<p>
+Ticket generation might involve:
+</p>
+
+<p>
+• generate QR code<br>
+• create PDF<br>
+• upload ticket<br>
+• send email
+</p>
+
+<p>
+Instead of blocking the API, these tasks run as background jobs.
+</p>
+
+<pre><code>
+Student registers
+↓
+API saves data
+↓
+Job added to queue
+↓
+Background worker processes task
+</code></pre>
+
+<h3>Using Redis Queue</h3>
+
+<pre><code>
+from rq import Queue
+from redis import Redis
+
+redis_conn = Redis()
+queue = Queue(connection=redis_conn)
+
+@app.post("/register")
+async def register(student: Student):
+    # Save registration immediately
+    save_registration(student)
+    
+    # Queue background job
+    queue.enqueue(generate_and_send_ticket, student.id)
+    
+    return {"message": "Registration successful"}
+</code></pre>
+
+<p>
+The API responds immediately.
+The ticket generation happens in the background.
+</p>
+
+<h2>Idempotency</h2>
+
+<p>
+Sometimes the client retries a request because the response was lost.
+</p>
+
+<p>
+Without protection, the student might get registered twice.
+</p>
+
+<p>
+To avoid this, APIs use idempotency keys.
+</p>
+
+<pre><code>
+Idempotency-Key: abc123
+</code></pre>
+
+<p>
+If the same key appears again, the server returns the previous result instead of executing the operation again.
+</p>
+
+<h3>Implementing idempotency</h3>
+
+<pre><code>
+import redis
+
+redis_client = redis.Redis()
+
+@app.post("/register")
+async def register(
+    student: Student,
+    idempotency_key: str = Header(None)
+):
+    if idempotency_key:
+        # Check if we've seen this key before
+        cached_response = redis_client.get(f"idempotency:{idempotency_key}")
+        if cached_response:
+            return json.loads(cached_response)
+    
+    # Process registration
+    result = save_registration(student)
+    
+    # Cache the response
+    if idempotency_key:
+        redis_client.setex(
+            f"idempotency:{idempotency_key}",
+            86400,  # 24 hours
+            json.dumps(result)
+        )
+    
+    return result
+</code></pre>
+
+<h2>The real life of a backend request</h2>
+
+<p>
+Behind every simple API endpoint, many systems work together:
+</p>
+
+<p>
+<strong>Workers</strong> handling concurrency<br>
+<strong>Async operations</strong> managing I/O<br>
+<strong>Locks</strong> preventing race conditions<br>
+<strong>Atomic writes</strong> protecting data<br>
+<strong>Retries</strong> handling network failures<br>
+<strong>Authentication</strong> securing APIs<br>
+<strong>Background workers</strong> handling long tasks<br>
+<strong>Idempotency</strong> preventing duplicate actions
+</p>
+
+<p>
+These are the concepts that turn simple API code into reliable production systems.
+</p>
+
+<p>
+And that is the real story behind every backend request.
+</p>
+
+</div>
+
+<div class="series-nav">
+  <h3>The Life of a Backend Request Series</h3>
+  <ul class="series-list">
+    <li><a href="backend-request-part-1-workers-load-balancers.html">Part 1: When Hundreds of Users Hit Your API</a></li>
+    <li><a href="backend-request-part-2-async-concurrency.html">Part 2: Why Async APIs Can Handle Thousands of Requests</a></li>
+    <li><a href="backend-request-part-3-race-conditions-locks.html">Part 3: Race Conditions, Locks and Safe Data Handling</a></li>
+    <li><span class="current">Part 4: Making APIs Reliable in the Real World</span></li>
+  </ul>
+</div>
+
+</article>
+
+</body>
+</html>
