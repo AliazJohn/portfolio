@@ -1,7 +1,7 @@
 ---
-title: "Testing the new CMS approach"
-date: "2026-04-05T12:00:00Z"
-excerpt: "This is a dummy post to verify our incredible CMS build script works."
+title: Testing the new CMS approach
+date: 2026-04-05T12:00:00Z
+excerpt: This is a dummy post to verify our incredible CMS build script works.
 ---
 
 # Hello CMS
