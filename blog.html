@@ -1,179 +1,211 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-Z2X15WEGYG"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z2X15WEGYG"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
 
-  gtag('config', 'G-Z2X15WEGYG');
-</script>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="AI Engineering Blog by Aliyas John - Deep dives into Generative AI, LLMs, RAG systems, GPT, Machine Learning, Agentic AI, LangChain, and AI solutions.">
-<meta name="keywords" content="Generative AI, LLM, GPT, ChatGPT, RAG systems, Machine Learning, AI Engineer, Agentic AI, LangChain, Python AI, Azure AI, Neo4j, Vector Database, Prompt Engineering, AI Agents, Deep Learning, NLP, Artificial Intelligence">
-<meta name="author" content="Aliyas John">
-<meta name="robots" content="index, follow">
-<meta property="og:title" content="AI Engineering Blog | Aliyas John">
-<meta property="og:description" content="Insights on Generative AI, LLMs, RAG systems, and building intelligent AI solutions.">
-<meta property="og:type" content="website">
-<title>AI Engineering Blog | Aliyas John - Generative AI, LLMs, RAG Systems</title>
-<link rel="icon" type="image/png" href="favicon.png">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    gtag('config', 'G-Z2X15WEGYG');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="AI Engineering Blog by Aliyas John - Deep dives into Generative AI, LLMs, RAG systems, GPT, Machine Learning, Agentic AI, LangChain, and AI solutions.">
+  <meta name="keywords"
+    content="Generative AI, LLM, GPT, ChatGPT, RAG systems, Machine Learning, AI Engineer, Agentic AI, LangChain, Python AI, Azure AI, Neo4j, Vector Database, Prompt Engineering, AI Agents, Deep Learning, NLP, Artificial Intelligence">
+  <meta name="author" content="Aliyas John">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="AI Engineering Blog | Aliyas John">
+  <meta property="og:description"
+    content="Insights on Generative AI, LLMs, RAG systems, and building intelligent AI solutions.">
+  <meta property="og:type" content="website">
+  <title>AI Engineering Blog | Aliyas John - Generative AI, LLMs, RAG Systems</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 
-<style>
-:root {
-  --bg: #0a0a0a;
-  --white: #ffffff;
-  --gray: #888;
-  --border: #1a1a1a;
-}
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --white: #ffffff;
+      --gray: #888;
+      --border: #1a1a1a;
+    }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Inter', sans-serif;
-}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
 
-body {
-  background: var(--bg);
-  color: var(--white);
-  overflow-x: hidden;
-  padding: 100px 10%;
-}
+    body {
+      background: var(--bg);
+      color: var(--white);
+      overflow-x: hidden;
+      padding: 100px 10%;
+    }
 
-h1 {
-  font-size: 3rem;
-  font-weight: 800;
-  letter-spacing: -2px;
-  margin-bottom: 20px;
-}
+    h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      letter-spacing: -2px;
+      margin-bottom: 20px;
+    }
 
-.subtitle {
-  color: var(--gray);
-  margin-bottom: 60px;
-  font-size: 1.1rem;
-}
+    .subtitle {
+      color: var(--gray);
+      margin-bottom: 60px;
+      font-size: 1.1rem;
+    }
 
-.nav {
-  position: fixed;
-  top: 30px;
-  right: 50px;
-  display: flex;
-  gap: 20px;
-  font-size: 0.9rem;
-  z-index: 1000;
-  background: rgba(10, 10, 10, 0.8);
-  backdrop-filter: blur(10px);
-  padding: 15px 25px;
-  border-radius: 50px;
-  border: 1px solid var(--border);
-}
+    .nav {
+      position: fixed;
+      top: 30px;
+      right: 50px;
+      display: flex;
+      gap: 20px;
+      font-size: 0.9rem;
+      z-index: 1000;
+      background: rgba(10, 10, 10, 0.8);
+      backdrop-filter: blur(10px);
+      padding: 15px 25px;
+      border-radius: 50px;
+      border: 1px solid var(--border);
+    }
 
-.nav a {
-  text-decoration: none;
-  color: var(--gray);
-  transition: 0.3s;
-  display: inline-block;
-}
+    .nav a {
+      text-decoration: none;
+      color: var(--gray);
+      transition: 0.3s;
+      display: inline-block;
+    }
 
-.nav a:hover {
-  color: var(--white);
-}
+    .nav a:hover {
+      color: var(--white);
+    }
 
-.back-link {
-  display: inline-block;
-  color: var(--gray);
-  text-decoration: none;
-  margin-bottom: 40px;
-  transition: color 0.3s;
-}
+    .back-link {
+      display: inline-block;
+      color: var(--gray);
+      text-decoration: none;
+      margin-bottom: 40px;
+      transition: color 0.3s;
+    }
 
-.back-link:hover {
-  color: var(--white);
-}
+    .back-link:hover {
+      color: var(--white);
+    }
 
-.blog-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 30px;
-  align-items: stretch;
-}
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+      align-items: stretch;
+    }
 
-.blog-grid > a {
-  display: flex;
-}
+    .blog-grid>a {
+      display: flex;
+    }
 
-.blog-card {
-  padding: 30px;
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  transition: 0.3s ease;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
+    .blog-card {
+      padding: 30px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      transition: 0.3s ease;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
 
-.blog-card:hover {
-  border-color: var(--white);
-  transform: translateY(-5px);
-}
+    .blog-card:hover {
+      border-color: var(--white);
+      transform: translateY(-5px);
+    }
 
-.blog-date {
-  color: var(--gray);
-  font-size: 0.9rem;
-  margin-bottom: 10px;
-}
+    .blog-date {
+      color: var(--gray);
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
 
-.blog-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 15px;
-}
+    .blog-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
 
-.blog-excerpt {
-  color: var(--gray);
-  line-height: 1.6;
-}
+    .blog-excerpt {
+      color: var(--gray);
+      line-height: 1.6;
+    }
 
-.empty-state {
-  text-align: center;
-  padding: 100px 20px;
-  color: var(--gray);
-}
+    .empty-state {
+      text-align: center;
+      padding: 100px 20px;
+      color: var(--gray);
+    }
 
-@media (max-width:768px){
-  body { padding: 80px 6%; }
-  h1 { font-size: 2.5rem; }
-  .blog-grid { grid-template-columns: 1fr; }
-  .nav {
-    top: 20px;
-    right: 6%;
-    padding: 12px 20px;
-  }
-}
+    @media (max-width:768px) {
+      body {
+        padding: 80px 6%;
+      }
 
-@media (max-width:480px){
-  body { padding: 60px 5%; }
-  h1 { font-size: 2rem; }
-  .subtitle { font-size: 1rem; margin-bottom: 40px; }
-  .blog-card { padding: 20px; }
-  .blog-title { font-size: 1.3rem; }
-  .empty-state { padding: 60px 20px; }
-  .nav {
-    padding: 10px 15px;
-  }
-}
-</style>
+      h1 {
+        font-size: 2.5rem;
+      }
+
+      .blog-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav {
+        top: 20px;
+        right: 6%;
+        padding: 12px 20px;
+      }
+    }
+
+    @media (max-width:480px) {
+      body {
+        padding: 60px 5%;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .subtitle {
+        font-size: 1rem;
+        margin-bottom: 40px;
+      }
+
+      .blog-card {
+        padding: 20px;
+      }
+
+      .blog-title {
+        font-size: 1.3rem;
+      }
+
+      .empty-state {
+        padding: 60px 20px;
+      }
+
+      .nav {
+        padding: 10px 15px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<script type="application/ld+json">
+  <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Blog",
@@ -189,95 +221,89 @@ h1 {
 }
 </script>
 
-<div class="nav">
-  <a href="index.html">Author</a>
-</div>
+  <div class="nav">
+    <a href="index.html">Author</a>
+  </div>
 
-<h1>Blog</h1>
-<p class="subtitle">Thoughts on AI, engineering, and building intelligent systems</p>
+  <h1>Blog</h1>
+  <p class="subtitle">Thoughts on AI, engineering, and building intelligent systems</p>
 
-<div class="blog-grid">
-  <!-- CMS_POSTS_START -->
+  <div class="blog-grid">
+    <!-- CMS_POSTS_START -->
 
-  <a href="blog/dummy-post.html" style="text-decoration: none; color: inherit;" data-date="2026-04-05">
+  <a href="blog/backend-request-part-1-workers-load-balancers.html" style="text-decoration: none; color: inherit;" data-date="2026-03-03">
     <div class="blog-card">
-      <div class="blog-date">April 05, 2026</div>
-      <h2 class="blog-title">Testing the new CMS approach</h2>
-      <p class="blog-excerpt">This is a dummy post to verify our incredible CMS build script works.</p>
-    </div>
-  </a>
-  <!-- CMS_POSTS_END -->
-  <a href="blog/backend-request-part-1-workers-load-balancers.html" style="text-decoration: none; color: inherit;" data-date="2026-03-04">
-    <div class="blog-card">
-      <div class="blog-date">March 04, 2026 • Series 1: Part 1 of 4</div>
-      <h2 class="blog-title">When Hundreds of Users Hit Your API</h2>
-      <p class="blog-excerpt">Learn how backend workers and load balancers handle hundreds of concurrent requests in production systems. A practical guide using a real-world tech fest registration system.</p>
+      <div class="blog-date">March 04, 2026</div>
+      <h2 class="blog-title">When Hundreds of Users Hit Your API - Part 1</h2>
+      <p class="blog-excerpt">Part 1: Learn how backend workers and load balancers handle hundreds of concurrent requests in production systems. A practical guide using a real-world tech fest registration system.</p>
     </div>
   </a>
 
-  <a href="blog/backend-request-part-2-async-concurrency.html" style="text-decoration: none; color: inherit;" data-date="2026-03-05">
+  <a href="blog/backend-request-part-2-async-concurrency.html" style="text-decoration: none; color: inherit;" data-date="2026-03-04">
     <div class="blog-card">
-      <div class="blog-date">March 05, 2026 • Series 1: Part 2 of 4</div>
-      <h2 class="blog-title">Why Async APIs Can Handle Thousands of Requests</h2>
-      <p class="blog-excerpt">Understand how async programming enables backend APIs to handle thousands of concurrent requests efficiently. The secret behind high concurrency in modern systems.</p>
+      <div class="blog-date">March 05, 2026</div>
+      <h2 class="blog-title">Why Async APIs Can Handle Thousands of Requests - Part 2</h2>
+      <p class="blog-excerpt">Part 2: Understand how async programming enables backend APIs to handle thousands of concurrent requests efficiently. Learn the difference between blocking and non-blocking I/O.</p>
     </div>
   </a>
 
-  <a href="blog/backend-request-part-3-race-conditions-locks.html" style="text-decoration: none; color: inherit;" data-date="2026-03-06">
+  <a href="blog/backend-request-part-3-race-conditions-locks.html" style="text-decoration: none; color: inherit;" data-date="2026-03-05">
     <div class="blog-card">
-      <div class="blog-date">March 06, 2026 • Series 1: Part 3 of 4</div>
-      <h2 class="blog-title">Race Conditions, Locks and Safe Data Handling</h2>
-      <p class="blog-excerpt">Learn how race conditions happen in concurrent systems and how locks and atomic operations prevent data corruption in production backends.</p>
+      <div class="blog-date">March 06, 2026</div>
+      <h2 class="blog-title">Race Conditions, Locks and Safe Data Handling - Part 3</h2>
+      <p class="blog-excerpt">Part 3: Learn how race conditions happen in concurrent systems and how locks and atomic operations prevent data corruption in production backends.</p>
     </div>
   </a>
 
-  <a href="blog/backend-request-part-4-production-reliability.html" style="text-decoration: none; color: inherit;" data-date="2026-03-07">
+  <a href="blog/backend-request-part-4-production-reliability.html" style="text-decoration: none; color: inherit;" data-date="2026-03-06">
     <div class="blog-card">
-      <div class="blog-date">March 07, 2026 • Series 1: Part 4 of 4</div>
-      <h2 class="blog-title">Making APIs Reliable in the Real World</h2>
-      <p class="blog-excerpt">Learn how production APIs handle failures with retries, authentication, background jobs, and idempotency. The complete guide to building reliable backend systems.</p>
+      <div class="blog-date">March 07, 2026</div>
+      <h2 class="blog-title">Making APIs Reliable in the Real World - Part 4</h2>
+      <p class="blog-excerpt">Part 4: Learn how production APIs handle failures with retries, authentication, background jobs, and idempotency. The complete guide to building reliable backend systems.</p>
     </div>
   </a>
 
-  <a href="blog/document-ingestion-strategies-for-rag-systems.html" style="text-decoration: none; color: inherit;" data-date="2026-03-08">
-    <div class="blog-card">
-      <div class="blog-date">March 08, 2026</div>
-      <h2 class="blog-title">Document Ingestion Strategies for RAG Systems</h2>
-      <p class="blog-excerpt">Building a RAG system is easy in demos but becomes tricky with real documents. PDFs with tables, charts, and complex layouts can break naive chunking approaches. In this post, I discuss document ingestion patterns that help improve retrieval quality in production RAG systems.</p>
-    </div>
-  </a>
-
-  <!-- <a href="blog/the-rise-of-agentic-ai.html" style="text-decoration: none; color: inherit;" data-date="2026-01-20">
-    <div class="blog-card">
-      <div class="blog-date">January 20, 2026</div>
-      <h2 class="blog-title">The Rise of Agentic AI</h2>
-      <p class="blog-excerpt">Exploring how AI agents are transforming automation and decision-making. From LangChain to CrewAI, the future is autonomous.</p>
-    </div>
-  </a>
-
-  <a href="blog/building-production-rag-systems.html" style="text-decoration: none; color: inherit;" data-date="2026-01-15">
+  <a href="blog/building-production-rag-systems.html" style="text-decoration: none; color: inherit;" data-date="2026-01-14">
     <div class="blog-card">
       <div class="blog-date">January 15, 2026</div>
       <h2 class="blog-title">Building Production-Ready RAG Systems</h2>
-      <p class="blog-excerpt">A deep dive into creating reliable RAG systems for enterprise applications. Learn best practices for chunking, retrieval, and LLM integration.</p>
+      <p class="blog-excerpt">Learn how to build production-ready RAG systems with best practices for enterprise applications.</p>
     </div>
-  </a> -->
-</div>
+  </a>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const grid = document.querySelector('.blog-grid');
-  const posts = Array.from(grid.children);
-  
-  posts.sort((a, b) => {
-    const dateA = new Date(a.dataset.date);
-    const dateB = new Date(b.dataset.date);
-    return dateB - dateA;
-  });
-  
-  posts.forEach(post => grid.appendChild(post));
-});
-</script>
+  <a href="blog/document-ingestion-strategies-for-rag-systems.html" style="text-decoration: none; color: inherit;" data-date="2026-03-07">
+    <div class="blog-card">
+      <div class="blog-date">March 08, 2026</div>
+      <h2 class="blog-title">Document Ingestion Strategies for RAG Systems</h2>
+      <p class="blog-excerpt">Learn practical document ingestion strategies for production RAG systems - from chunking methods to handling tables, images, and complex layouts for better retrieval accuracy.</p>
+    </div>
+  </a>
+
+  <a href="blog/the-rise-of-agentic-ai.html" style="text-decoration: none; color: inherit;" data-date="2026-01-19">
+    <div class="blog-card">
+      <div class="blog-date">January 20, 2026</div>
+      <h2 class="blog-title">The Rise of Agentic AI</h2>
+      <p class="blog-excerpt">Exploring the future of AI agents and how they're transforming automation and decision-making.</p>
+    </div>
+  </a>
+  <!-- CMS_POSTS_END -->
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const grid = document.querySelector('.blog-grid');
+      const posts = Array.from(grid.children);
+
+      posts.sort((a, b) => {
+        const dateA = new Date(a.dataset.date);
+        const dateB = new Date(b.dataset.date);
+        return dateB - dateA;
+      });
+
+      posts.forEach(post => grid.appendChild(post));
+    });
+  </script>
 
 </body>
+
 </html>
